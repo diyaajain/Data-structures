@@ -46,6 +46,7 @@ class Song {
     }
 };
 
+template <typename E>
 class User {
   private:
     string name;
@@ -55,12 +56,13 @@ class User {
   public:
     User<E>();
     User<E>(string& name, string& email, Playlist<E>& playlist) {
-      name = name;
-      email = email;
-      playlist = playlist;
+      this->name = name;
+      this->email = email;
+      this->playlist = playlist;
     };
   
     void getPlaylist() { playlist.print(); };
+    void createAccount();
   
   friend class Playlist<E>;
 };
@@ -85,9 +87,7 @@ bool User<E>::validateEmail(string& email) {
     return true;
 }
 
-void createAccount()
-{
-User<E>::User() {
+void createAccount() {
   cout << "Welcome to COPtify!" << endl;
   cout << "Let's create your profile." << endl;
   cout << "Please enter your full name: ";
@@ -104,7 +104,23 @@ User<E>::User() {
   cout << "Let's create your first COPtify playlist!" << endl;
   playlist.add();
 };
-}
+void addSong(string title, string artist) {
+    Song* newSong = new Song();
+    newSong->title = title;
+    newSong->artist = artist;
+    newSong->next = nullptr;
+    newSong->prev = tail;
+
+    if (tail != nullptr) {
+      tail->next = newSong;
+    }
+
+    tail = newSong;
+
+    if (head == nullptr) {
+      head = newSong;
+    }
+  }
 
 int main()
 {
