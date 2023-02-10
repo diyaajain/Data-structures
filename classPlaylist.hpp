@@ -64,6 +64,10 @@ class Playlist {
 
 template <typename E>
 Node<E>* Playlist<E>::play() {
+  if (header->next == trailer) {
+    cout << "There are no songs in the playlist." << endl;
+    return header->next;
+  }
   string songName;
   cout << "Enter the song title: ";
   getline(cin, songName);
@@ -82,10 +86,13 @@ Node<E>* Playlist<E>::play() {
 
 template <typename E>
 void Playlist<E>::remove() {
+  cin.ignore();
+  if (empty()) {
+    cout << "No songs in the playlist." << endl;
+    return;
+  }
   string songName;
-  cin.ignore();
-  cin.ignore();
-  cout << "Enter the song title: ";
+  cout << "Enter your song title: ";
   getline(cin, songName);
   Node<E>* cur = header->next;
   while (cur != trailer && cur->songInfo->getTitle() != songName) {
@@ -98,11 +105,12 @@ void Playlist<E>::remove() {
   cur->prev->next = cur->next;
   cur->next->prev = cur->prev;
   delete cur;
+  cout << "Song with title " << songName << " removed!" << endl;
 }
 
 template <typename E>
 void Playlist<E>::showPlaylist(const string& user, const string& email) {
-  if (header->next == trailer) {
+  if (empty()) {
     cout << "No songs in the playlist." << endl;
     return;
   }

@@ -29,8 +29,8 @@ class User {
       playlist.showPlaylist(user, email); 
     };
     void addSong() { playlist.add(); }
-    void removeSong() {playlist.remove(); }
-    void clearPlaylist() {playlist.clear(); }
+    void removeSong() { playlist.remove(); }
+    void clearPlaylist() { playlist.clear(); }
 
   friend class Playlist<E>;
 };

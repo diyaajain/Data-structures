@@ -42,9 +42,10 @@ int main() {
       case 6: player.removeSong();
               break;
       case 7: player.clearPlaylist();
+              cout << "Thank you! Come again." << endl;  
               return EXIT_SUCCESS;
       default: cout << "You entered the wrong choice, please try again." << endl;
-                break;
+              break;
     }
     cout << endl;
   }
