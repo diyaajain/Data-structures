@@ -54,7 +54,7 @@ class User {
     Playlist<E> playlist;
     bool validateEmail(string& email);
   public:
-    User<E>(){};
+    User<E>(){}; // Default constructor added
     User<E>(string& name, string& email, Playlist<E>& playlist) {
       name = name;
       email = email;
