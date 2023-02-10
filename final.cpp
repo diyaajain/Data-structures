@@ -14,7 +14,7 @@ class Node {
   public:
     Node(){};
     Node<E>(E* song, Node<E>* back, Node<E>* forward) {
-      songInfo = song;
+      songInfo = new E(*song);
       prev = back;
       next = forward;
     }
@@ -54,11 +54,11 @@ class User {
     Playlist<E> playlist;
     bool validateEmail(string& email);
   public:
-    User<E>();
+    User<E>(){};
     User<E>(string& name, string& email, Playlist<E>& playlist) {
-      this->name = name;
-      this->email = email;
-      this->playlist = playlist;
+      name = name;
+      email = email;
+      playlist = playlist;
     };
   
     void getPlaylist() { playlist.print(); };
@@ -91,17 +91,18 @@ void createAccount() {
   cout << "Welcome to COPtify!" << endl;
   cout << "Let's create your profile." << endl;
   cout << "Please enter your full name: ";
-  getline(cin, name);
+  getline(cin, this->name);
   bool isValid = false;
   cout << "Please enter your email: ";
   while (!isValid) {
-    cin >> email;
-    isValid = validateEmail(email);
+    cin >> this->email;
+    isValid = this->validateEmail(this->email);
     if (!isValid) {
       cout << "Invalid email format. Please enter a valid email: ";
     }
   }
 };
+
 void addSong(string title, string artist) {
     Song* newSong = new Song();
     newSong->title = title;
