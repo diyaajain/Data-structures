@@ -20,7 +20,8 @@ int main() {
   cout << "4. Play previous song" << endl;
   cout << "5. Show playlist" << endl;
   cout << "6. Remove a song" << endl;
-  cout << "7. Quit" << endl;
+  cout << "7. Update a song" << endl;
+  cout << "8. Quit the player" << endl;
   cout << endl;
   // cout << "7. Delete the playlist" << endl;
   // cout << "8. Delete account and all the information" << endl;
@@ -31,8 +32,8 @@ int main() {
     switch (choice) {
       case 1: player.addSong();
               break;
-      // case 2: player.getCurrentSong() = player.getPlaylist().play();
-      //         break;
+//       case 2: player.playSong();
+//                 break;
       // case 3: player.getPlaylist() = player.getPlaylist().next(player->playlist);
       //         break;
       // case 4: player->playlist = player->playlist.prev(player->playlist);
@@ -41,11 +42,14 @@ int main() {
               break;
       case 6: player.removeSong();
               break;
-      case 7: player.clearPlaylist();
-              cout << "Thank you! Come again." << endl;  
+      case 7: player.updateSong();
+        break;
+        case 8: player.clearPlaylist();
+              cout << "Thank you! Come again.\n" << endl;  
               return EXIT_SUCCESS;
+
       default: cout << "You entered the wrong choice, please try again." << endl;
-                break;
+              break;
     }
     cout << endl;
   }

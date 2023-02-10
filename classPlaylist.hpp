@@ -35,8 +35,9 @@ class Playlist {
     // void print();
     // Node<E>* next(Node<E>* currentSong);
     // Node<E>* prev(Node<E>* currentSong);
+    Node<E>* play();
     void remove();
-    void play();
+    void update();
     void showPlaylist(const string& user, const string& email);
 };
 
@@ -63,7 +64,7 @@ class Playlist {
 // }
 
 template <typename E>
-void Playlist<E>::play() {
+Node<E>* Playlist<E>::play() {
   if (header->next == trailer) {
     cout << "There are no songs in the playlist." << endl;
     return header->next;
@@ -105,7 +106,7 @@ void Playlist<E>::remove() {
   cur->prev->next = cur->next;
   cur->next->prev = cur->prev;
   delete cur;
-  cout << "Song with title " << songName << " removed!" << endl;
+  cout << "Song with title \"" << songName << "\" removed!" << endl;
 }
 
 template <typename E>
@@ -131,6 +132,61 @@ void Playlist<E>::clear() {
     cur->next->prev = cur->prev;
     delete cur;
     cur = header->next;
+  }
+}
+template <typename E>
+void Playlist<E>::update() {
+  cin.ignore();
+  cout << "What would you like to update?" << endl;
+  cout << "1. Song information" << endl;
+  cout << "2. Your name" << endl;
+  cout << "3. Your email - id" << endl;
+  cout << "Enter your choice: ";
+  int choice;
+  cin >> choice;
+  switch(choice) {
+    case 1: 
+    {
+      if (empty()) {
+    cout << "No songs in the playlist." << endl;
+    return;
+    }
+      cout << "Enter the name of the song you want to update: ";
+      string songName;
+      cin.ignore();
+      getline(cin, songName);
+      Node<E>* cur = header;
+      while (cur != trailer) {
+        if (cur->songInfo->getTitle() == songName) {
+          cur->songInfo->setTitle(songName);
+          break;
+        }
+        cur = cur->next;
+      }
+      if (cur == nullptr) {
+        cout << "No such song was found in the playlist." << endl;
+      }
+      break;
+    }
+    case 2:
+    { 
+      cout << "Enter a new name: ";
+      string name;
+      cin.ignore();
+      getline(cin, name);
+      break;
+    }  
+    case 3:
+    { 
+      cout << "Enter a new email - id: ";
+      string email_id;
+      cin.ignore();
+      getline(cin, email_id);
+      break;
+    } 
+    default:
+      cout << "Invalid choice. Please try again." << endl;
+      break;
   }
 }
 

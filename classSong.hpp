@@ -22,10 +22,11 @@ class Song {
       min = m;
       sec = s;
     };
+     void setTitle(string& newTitle) { title = newTitle; }
     string getTitle() const{
       return title;
     }
-    string getArtist() const{
+  string getArtist() const{
       return artist;
     }
 };
