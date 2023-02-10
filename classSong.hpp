@@ -25,7 +25,7 @@ class Song {
     string getTitle() const{
       return title;
     }
-  string getArtist() const{
+    string getArtist() const{
       return artist;
     }
 };

@@ -35,8 +35,8 @@ class Playlist {
     // void print();
     // Node<E>* next(Node<E>* currentSong);
     // Node<E>* prev(Node<E>* currentSong);
-    Node<E>* play();
     void remove();
+    void play();
     void showPlaylist(const string& user, const string& email);
 };
 
@@ -63,7 +63,7 @@ class Playlist {
 // }
 
 template <typename E>
-Node<E>* Playlist<E>::play() {
+void Playlist<E>::play() {
   if (header->next == trailer) {
     cout << "There are no songs in the playlist." << endl;
     return header->next;

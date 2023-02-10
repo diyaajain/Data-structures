@@ -12,17 +12,10 @@ class User {
     string name;
     string email;
     Playlist<E> playlist;
-    // Node<E>* current;
     bool validateEmail(string& email);
   public:
     User<E>();
-    User<E>(string& name, string& email, Playlist<E> playlist /*, Node<E>* cur*/) {
-      name = name;
-      email = email;
-      playlist = playlist;
-      // current = cur;
-    };
-    // Node<E>* getCurrentSong() {return current; };
+    User<E>(string name, string email, Playlist<E> playlist) : name(name), email(email), playlist(playlist) {};
     string getName() { return name; };
     string getEmail() { return email; };
     void printPlaylist(const string& user, const string& email) {
@@ -31,9 +24,12 @@ class User {
     void addSong() { playlist.add(); }
     void removeSong() { playlist.remove(); }
     void clearPlaylist() { playlist.clear(); }
+    void setName(string name) { this->name = name; }
+    void setEmail(string email) { this->email = email; }
 
   friend class Playlist<E>;
 };
+
 
 template <typename E>
 bool User<E>::validateEmail(string& email) {
