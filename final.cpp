@@ -101,8 +101,6 @@ void createAccount() {
       cout << "Invalid email format. Please enter a valid email: ";
     }
   }
-  cout << "Let's create your first COPtify playlist!" << endl;
-  playlist.addSong();
 };
 void addSong(string title, string artist) {
     Song* newSong = new Song();
