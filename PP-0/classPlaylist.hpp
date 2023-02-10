@@ -31,7 +31,24 @@ class Playlist {
     void clear();
     void add();
     void print();
+    void remove();
+    void remove(string songTitle);
 };
+template <typename E>
+void Playlist<E>::remove(string songTitle) {
+  Node<E>* cur = header->next;
+  while (cur != trailer) {
+    if (cur->songInfo->getTitle() == songTitle) {
+      cur->prev->next = cur->next;
+      cur->next->prev = cur->prev;
+      delete cur->songInfo;
+      delete cur;
+      return;
+    }
+    cur = cur->next;
+  }
+  cout << "Song not found." << endl;
+}
 
 template <typename E>
 void Playlist<E>::clear() {
