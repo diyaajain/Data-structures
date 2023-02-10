@@ -102,7 +102,7 @@ void createAccount() {
     }
   }
   cout << "Let's create your first COPtify playlist!" << endl;
-  playlist.add();
+  playlist.addSong();
 };
 void addSong(string title, string artist) {
     Song* newSong = new Song();
@@ -141,12 +141,8 @@ int main()
         cin.ignore();
         if (choice == 1) 
         {
-            string title, artist;
-            cout << "Enter song title: ";
-            getline(cin, title);
-            cout << "Enter artist name: ";
-            getline(cin, artist);
-            player.addSong(title, artist);
+          string title, artist;
+          player.addSong(title, artist);
         } 
     else if (choice == 2) 
     {
