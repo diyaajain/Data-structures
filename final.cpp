@@ -110,22 +110,37 @@ void User::createAccount() {
 };
 
 void addSong(string title, string artist) {
-    Song* newSong = new Song();
-    newSong->title = title;
-    newSong->artist = artist;
-    newSong->next = nullptr;
-    newSong->prev = tail;
-
-    if (tail != nullptr) {
-      tail->next = newSong;
-    }
-
-    tail = newSong;
-
-    if (head == nullptr) {
-      head = newSong;
-    }
+  Song* newSong = new Song(title, artist, "", 0, 0);
+  Node<Song>* newNode = new Node<Song>(newSong, tail, nullptr);
+  
+  if (tail != nullptr) {
+    tail->next = newNode;
   }
+
+  tail = newNode;
+
+  if (head == nullptr) {
+    head = newNode;
+  }
+}
+
+// void addSong(string title, string artist) {
+//     Song* newSong = new Song();
+//     newSong->title = title;
+//     newSong->artist = artist;
+//     newSong->next = nullptr;
+//     newSong->prev = tail;
+
+//     if (tail != nullptr) {
+//       tail->next = newSong;
+//     }
+
+//     tail = newSong;
+
+//     if (head == nullptr) {
+//       head = newSong;
+//     }
+//   }
 
 int main()
 {
