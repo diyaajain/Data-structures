@@ -41,7 +41,7 @@ class Song {
     string getTitle() const{
       return title;
     }
-  string getArtist() const{
+    string getArtist() const{
       return artist;
     }
 };
@@ -63,6 +63,11 @@ class User {
   
     void getPlaylist() { playlist.print(); };
     void createAccount();
+    void addSong(string title, string artist);
+    void play(string title);
+    void next();
+    void prev();
+    void showPlaylist();
   
   friend class Playlist<E>;
 };
@@ -87,7 +92,7 @@ bool User<E>::validateEmail(string& email) {
     return true;
 }
 
-void createAccount() {
+void User::createAccount() {
   cout << "Welcome to COPtify!" << endl;
   cout << "Let's create your profile." << endl;
   cout << "Please enter your full name: ";
@@ -99,6 +104,7 @@ void createAccount() {
     isValid = this->validateEmail(this->email);
     if (!isValid) {
       cout << "Invalid email format. Please enter a valid email: ";
+
     }
   }
 };
