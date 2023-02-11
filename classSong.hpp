@@ -1,3 +1,4 @@
+/* This is the header file for the Song class. */
 #ifndef CLASSSONG_HPP
 #define CLASSSONG_HPP
 #include <iostream>
@@ -6,14 +7,14 @@
 using namespace std;
 
 class Song {
-  private:
+  private: /* define private data members of class song */
     string title;
     string artist;
     string album;
     int min;
     int sec;
   
-  public:
+  public: /* default constructor for the song class */
     Song(){};
     Song(string& name, string& singer, string& albumName, int m, int s) {
       title = name;
@@ -22,13 +23,12 @@ class Song {
       min = m;
       sec = s;
     };
-     void setTitle(string& newTitle) { title = newTitle; }
-    string getTitle() const{
-      return title;
-    }
-  string getArtist() const{
-      return artist;
-    }
+    /* member functions */
+    void setTitle(string& newTitle) { title = newTitle; }
+    void setArtist(string& newArtist) { artist = newArtist; }
+    void setAlbum(string& newAlbum) { album = newAlbum; }
+    string getTitle() const { return title; }
+    string getArtist() const { return artist; }
 };
 
 #endif

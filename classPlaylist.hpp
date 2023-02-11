@@ -1,88 +1,170 @@
+/* This is the header file for the Playlist class. */
 #ifndef CLASSPLAYLIST_HPP
 #define CLASSPLAYLIST_HPP
-#include "classNode.hpp"
-#include "classUser.hpp"
 #include <iostream>
 #include <string>
+#include "classNode.hpp"
+#include "classUser.hpp"
 
 using namespace std;
+
 template <typename E> class User;
 template <typename E>
 class Playlist {
-  private:
-    Node<E>* header;
-    Node<E>* trailer;
-
-  public:
-    Playlist<E>() {
-      header = new Node<E>();
-      trailer = new Node<E>();
-      header->next = trailer;
-      trailer->prev = header;
-    }
-
-    ~Playlist<E>() {
-      while (!empty()) {
-        clear();
-      }
-      delete header;
-      delete trailer;
-    }
-
-    bool empty() const { return (header->next == trailer); } 
-    void clear();
-    void add();
-    // void print();
-    // Node<E>* next(Node<E>* currentSong);
-    // Node<E>* prev(Node<E>* currentSong);
-    Node<E>* play();
-    void remove();
-    void update();
-    void showPlaylist(const string& user, const string& email);
+    private:
+        Node<E>* header;
+        Node<E>* trailer;
+        Node<E>* current; // holds the current node
+    public:
+        // Constructor for Playlist
+        Playlist<E>() {
+            header = new Node<E>();
+            trailer = new Node<E>();
+            header->next = trailer;
+            trailer->prev = header;
+            current = header->next; // initially points to the node after the header (i.e. trailer)
+        }
+        // Destructor
+        ~Playlist<E>() {
+            while (!empty()) {
+                clear();
+            }
+            delete header;
+            delete trailer;
+        }
+        // function protoypes
+        bool empty() const { return (header->next == trailer); } 
+        void clear();
+        void add();
+        void remove();
+        void showPlaylist(const string& user, const string& email);
+        void updateSongInfo();
+        Node<E>* play();
+        Node<E>* prev();
+        Node<E>* next();
+        Node<E>* getCurrent() const { return current; }; // getter for current node
 };
 
-// template <typename E>
-// Node<E>* Playlist<E>::next(Node<E>* currentSong) {
-//   if (currentSong == trailer || currentSong == trailer->prev) {
-//     cout << "No next song." << endl;
-//     return;
-//   }
-//   currentSong = currentSong->next;
-//   cout << "Now playing: " << currentSong->songInfo->getTitle() << " by " << currentSong->songInfo->getArtist() << endl;
-//   return currentSong;
-// }
+// the function to update song information
+template <typename E>
+void Playlist<E>::updateSongInfo() {
+    // if playlist is empty, then the functions returns before doing anything
+    if (empty()) {
+        cout << "No songs in the playlist." << endl;
+        return;
+    }
+    
+    // getting the name of the song that needs to be updated
+    string songName;
+    cin.ignore();
+    cout << "Enter the title of the song you would like to update: ";
+    getline(cin, songName);
+    
+    // finding the node with the song that has that title
+    Node<E>* cur = header->next;
+    while (cur != trailer && cur->songInfo->getTitle() != songName) {
+        cur = cur->next;
+    }
+    // if the pointer comes to the trailer node, then the song is not in the playlist
+    if (cur == trailer) {
+        cout << "No such song was found in the playlist." << endl;
+        return;
+    }
+    cout << endl;
 
-// template <typename E>
-// Node<E>* Playlist<E>::prev(Node<E>* currentSong) {
-//   if (currentSong == header->next || currentSong == header) {
-//     cout << "No previous song." << endl;
-//     return;
-//   }
-//   currentSong = currentSong->prev;
-//   cout << "Now playing: " << currentSong->songInfo->getTitle() << " by " << currentSong->songInfo->getArtist() << endl;
-//   return currentSong;
-// }
+    // Menu for the user to select what info they want to update
+    cout << "Please select one of the following:" << endl;
+    cout << endl;
+    cout << "1. Title" << endl;
+    cout << "2. Artist Name" << endl;
+    cout << "3. Album Name" << endl;
+    cout << endl;
+    cout << "Enter your selection: ";
+    int choice;
+    cin >> choice;
+    // depending on what the user chose, we declare a new variable and use a setter to assign the new value
+    if (choice == 1) { 
+        string newTitle;
+        cin.ignore();
+        cout << "Enter the new title: ";
+        getline(cin, newTitle);
+        cur->songInfo->setTitle(newTitle);
+    } else if (choice == 2) {
+        string newArtist;
+        cin.ignore();
+        cout << "Enter the new artist name: ";
+        getline(cin, newArtist);
+        cur->songInfo->setArtist(newArtist);
+    } else if (choice == 3) {
+        string newAlbum;
+        cin.ignore();
+        cout << "Enter the new album name: ";
+        getline(cin, newAlbum);
+        cur->songInfo->setAlbum(newAlbum);
+    } else {
+        cout << "Invalid choice, try again!" << endl;
+    }
+    cout << endl;
+}
 
+// function to play a song by showing a message to the user, it returns a pointer to the song that was played
 template <typename E>
 Node<E>* Playlist<E>::play() {
-  if (header->next == trailer) {
+    if (empty()) {
+        cout << "There are no songs in the playlist." << endl;
+        return current;
+    }
+
+    // we find the song by the title thatis entered by the user, case-sensitive
+    string songName;
+    cin.ignore();
+    cout << "Enter the song title: ";
+    getline(cin, songName);
+
+    // finding the node with song the title of which matches the one provided by the user
+    Node<E>* cur = header->next;
+    while (cur != trailer && cur->songInfo->getTitle() != songName) {
+        cur = cur->next;
+    }
+    if (cur == trailer) {
+        cout << "No song with title " << songName << " found." << endl;
+        return current; // return the initial current pointer
+    }
+    cout << "Now playing: " << cur->songInfo->getTitle() << " by " << cur->songInfo->getArtist() << endl;
+    current = cur; // current is updated once the song is found
+    return current; // pointer to the ciurrent node returned
+}
+
+// function to play the previous song, it return a pointer to that song
+template <typename E>
+Node<E>* Playlist<E>::prev() {
+  if (empty()) {
     cout << "There are no songs in the playlist." << endl;
-    return header->next;
+    return current;
   }
-  string songName;
-  cout << "Enter the song title: ";
-  getline(cin, songName);
-  cout<<songName<<endl;
-  Node<E>* cur = header->next;
-  while (cur != trailer && cur->songInfo->getTitle() != songName) {
-    cur = cur->next;
+  if (current->prev == header) {
+    cout << "No previous song in the playlist." << endl;
+    return current;
   }
-  if (cur == trailer) {
-    cout << "No song with title " << songName << " found." << endl;
-    return header->next;
-  }
-  cout << "Now playing: " << cur->songInfo->getTitle() << " by " << cur->songInfo->getArtist() << endl;
-  return cur;
+  current = current->prev;
+  cout << "Now playing: " << current->songInfo->getTitle() << " by " << current->songInfo->getArtist() << endl;
+  return current;
+}
+
+// function to play the next song of the playlist; returns the pointer to the next song
+template <typename E>
+Node<E>* Playlist<E>::next() {
+    if (empty()) {
+        cout << "There are no songs in the playlist." << endl;
+        return current;
+    }
+    if (current->next == trailer) {
+        cout << "No next song in the playlist." << endl;
+        return current;
+    }
+    current = current->next;
+    cout << "Now playing: " << current->songInfo->getTitle() << " by " << current->songInfo->getArtist() << endl;
+    return current;
 }
 
 template <typename E>
@@ -134,61 +216,6 @@ void Playlist<E>::clear() {
     cur = header->next;
   }
 }
-template <typename E>
-void Playlist<E>::update() {
-  cin.ignore();
-  cout << "What would you like to update?" << endl;
-  cout << "1. Song information" << endl;
-  cout << "2. Your name" << endl;
-  cout << "3. Your email - id" << endl;
-  cout << "Enter your choice: ";
-  int choice;
-  cin >> choice;
-  switch(choice) {
-    case 1: 
-    {
-      if (empty()) {
-    cout << "No songs in the playlist." << endl;
-    return;
-    }
-      cout << "Enter the name of the song you want to update: ";
-      string songName;
-      cin.ignore();
-      getline(cin, songName);
-      Node<E>* cur = header;
-      while (cur != trailer) {
-        if (cur->songInfo->getTitle() == songName) {
-          cur->songInfo->setTitle(songName);
-          break;
-        }
-        cur = cur->next;
-      }
-      if (cur == nullptr) {
-        cout << "No such song was found in the playlist." << endl;
-      }
-      break;
-    }
-    case 2:
-    { 
-      cout << "Enter a new name: ";
-      string name;
-      cin.ignore();
-      getline(cin, name);
-      break;
-    }  
-    case 3:
-    { 
-      cout << "Enter a new email - id: ";
-      string email_id;
-      cin.ignore();
-      getline(cin, email_id);
-      break;
-    } 
-    default:
-      cout << "Invalid choice. Please try again." << endl;
-      break;
-  }
-}
 
 template <typename E>
 void Playlist<E>::add() {
@@ -216,6 +243,7 @@ void Playlist<E>::add() {
 
   if (empty()) {
     header->next = newNode;
+    current = newNode;
     return;
   }
 
@@ -227,13 +255,4 @@ void Playlist<E>::add() {
   newNode->prev = cur;
 }
 
-// template <typename E>
-// void Playlist<E>::print() {
-//       Node<E>* cur = header->next;
-//       cout << "PRINTING:" << endl;
-//       while (cur != trailer) {
-//         cout << cur->songInfo->getTitle() << endl;
-//         cur = cur->next;
-//       }
-// }
 #endif
